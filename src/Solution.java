@@ -7,13 +7,13 @@ public class Solution {
         calculateMaxPercentForSurviving(getN());
         printResult();
     }
+
     static final int CALENDAR_START_YEAR = 2002;
     static final double PERCENT_STEP = 0.005;
     static Scanner scanner = new Scanner(System.in);
     static int year = scanner.nextInt();
     static double percent;
     private static double[] yYPercent = new double[21];
-
 
 
     public static void checkRightYear() throws Exception {
@@ -64,7 +64,8 @@ public class Solution {
             System.out.println(((String.format("%.1f", ((percent - PERCENT_STEP) * INTEGER_CONVERSION_FACTOR)))));
         }
     }
-    public static int getN(){
+
+    public static int getN() {
         int n = year - CALENDAR_START_YEAR;
         return n;
     }
