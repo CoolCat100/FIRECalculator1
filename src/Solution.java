@@ -4,32 +4,24 @@ public class Solution {
     public static void main(String[] args) throws Exception {
         checkRightYear();
         calculateYYPercent();
-        while (chanceToSurvive(n) == true) {
-            tryMorePercent();
-        }
+        calculateMaxPercentForSurviving(getN());
         printResult();
     }
-
-    private static int calendarStartYear = 2002;
-    private static double percentStep = 0.005;
+    static final int CALENDAR_START_YEAR = 2002;
+    static final double PERCENT_STEP = 0.005;
     static Scanner scanner = new Scanner(System.in);
     static int year = scanner.nextInt();
-    static int n = year - calendarStartYear;
-    static double percent = 0.005;
-    static double yearSpend;
-    static double[] yYPercent = new double[21];
-    static double beginYear;
-    static int startCountNumber = 1;
-    static double endYear = startCountNumber;
-    static double inflation = startCountNumber;
-    static int integerConversionFactor = 100;
-    static int integer = 1;
+    static double percent;
+    private static double[] yYPercent = new double[21];
+
+
 
     public static void checkRightYear() throws Exception {
-        if (year < 2002) {
+        int CALENDAR_FINISH_YEAR = 2021;
+        if (year < CALENDAR_START_YEAR) {
             throw new Exception("year must be more than 2001");
         }
-        if (year > 2021) {
+        if (year > CALENDAR_FINISH_YEAR) {
             throw new Exception("year must be less than 2022");
         }
     }
@@ -41,30 +33,39 @@ public class Solution {
         }
     }
 
-    public static void tryMorePercent() {
-        percent = percent + percentStep;
-        inflation = startCountNumber;
-        yearSpend = percent;
-        endYear = startCountNumber;
-    }
-
-    public static boolean chanceToSurvive(int n) {
-        for (int x = n; ((x + 1 < Constants.INFLATION_RATE.length)); ) {
-            yearSpend = yearSpend * inflation;
-            beginYear = endYear - yearSpend;
-            inflation = ((Constants.INFLATION_RATE[x]) / integerConversionFactor + integer);
-            endYear = beginYear * yYPercent[x];
-            x++;
+    public static void calculateMaxPercentForSurviving(int n) {
+        int INTEGER_CONVERSION_FACTOR = 100;
+        int INTEGER = 1;
+        final int START_COUNT_NUMBER = 1;
+        double endYear = START_COUNT_NUMBER;
+        double inflation;
+        double yearSpend;
+        double beginYear;
+        while (endYear > 0) {
+            percent = percent + PERCENT_STEP;
+            inflation = START_COUNT_NUMBER;
+            yearSpend = percent;
+            endYear = START_COUNT_NUMBER;
+            for (int x = n; ((x + 1 < Constants.INFLATION_RATE.length)); ) {
+                yearSpend = yearSpend * inflation;
+                beginYear = endYear - yearSpend;
+                inflation = ((Constants.INFLATION_RATE[x]) / INTEGER_CONVERSION_FACTOR + INTEGER);
+                endYear = beginYear * yYPercent[x];
+                x++;
+            }
         }
-        boolean survive = endYear > 0;
-        return survive;
     }
 
     public static void printResult() {
+        int INTEGER_CONVERSION_FACTOR = 100;
         if (percent > 0.99)
-            System.out.println(String.format("%.1f", percent * integerConversionFactor));
+            System.out.println(String.format("%.1f", percent * INTEGER_CONVERSION_FACTOR));
         else {
-            System.out.println(((String.format("%.1f", ((percent - percentStep) * integerConversionFactor)))));
+            System.out.println(((String.format("%.1f", ((percent - PERCENT_STEP) * INTEGER_CONVERSION_FACTOR)))));
         }
+    }
+    public static int getN(){
+        int n = year - CALENDAR_START_YEAR;
+        return n;
     }
 }
