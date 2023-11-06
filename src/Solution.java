@@ -2,21 +2,16 @@ import java.util.Scanner;
 
 public class Solution {
     public static void main(String[] args) throws Exception {
-        checkRightYear();
-        calculateYYPercent();
-        calculateMaxPercentForSurviving(getN());
-        printResult();
+        Scanner scanner = new Scanner(System.in);
+        int year = scanner.nextInt();
+        checkRightYear(year);
+        printResult(calculateMaxPercentForSurviving(getN(year), calculateAndGetYYPercent()));
     }
 
     static final int CALENDAR_START_YEAR = 2002;
     static final double PERCENT_STEP = 0.005;
-    static Scanner scanner = new Scanner(System.in);
-    static int year = scanner.nextInt();
-    static double percent;
-    private static double[] yYPercent = new double[21];
 
-
-    public static void checkRightYear() throws Exception {
+    public static void checkRightYear(int year) throws Exception {
         int CALENDAR_FINISH_YEAR = 2021;
         if (year < CALENDAR_START_YEAR) {
             throw new Exception("year must be more than 2001");
@@ -26,14 +21,16 @@ public class Solution {
         }
     }
 
-    public static void calculateYYPercent() {
+    public static double[] calculateAndGetYYPercent() {
+        double[] yYPercent = new double[21];
         yYPercent[0] = 1;
         for (int x = 1; x + 1 < yYPercent.length; x++) {
             yYPercent[x] = ((Constants.MOEX_RATE[x]) / Constants.MOEX_RATE[x - 1]);
         }
+        return yYPercent;
     }
 
-    public static void calculateMaxPercentForSurviving(int n) {
+    public static double calculateMaxPercentForSurviving(int n, double[] yYPercent) {
         int INTEGER_CONVERSION_FACTOR = 100;
         int INTEGER = 1;
         final int START_COUNT_NUMBER = 1;
@@ -41,6 +38,7 @@ public class Solution {
         double inflation;
         double yearSpend;
         double beginYear;
+        double percent = 0;
         while (endYear > 0) {
             percent = percent + PERCENT_STEP;
             inflation = START_COUNT_NUMBER;
@@ -54,9 +52,10 @@ public class Solution {
                 x++;
             }
         }
+        return percent;
     }
 
-    public static void printResult() {
+    public static void printResult(double percent) {
         int INTEGER_CONVERSION_FACTOR = 100;
         if (percent > 0.99)
             System.out.println(String.format("%.1f", percent * INTEGER_CONVERSION_FACTOR));
@@ -65,7 +64,7 @@ public class Solution {
         }
     }
 
-    public static int getN() {
+    public static int getN(int year) {
         int n = year - CALENDAR_START_YEAR;
         return n;
     }
